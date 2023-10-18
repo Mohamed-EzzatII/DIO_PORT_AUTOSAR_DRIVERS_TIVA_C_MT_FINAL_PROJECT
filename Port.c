@@ -97,15 +97,7 @@ void Port_Init(const Port_ConfigType* ConfigPtr){
 			}
                         
 
-			/*
-			 * For Set The Mode of the pin , if it is GPIO pin , then we clear the crossponding
-			 * bit in GPIOAFSEL and clear the crossponding PORT MASK CONTROL 4 bits in GPIOPCTL,
-			 * else we set the PORT MASK CONTROL 4 bits in GPIOPCTL & set the crossponding
-			 * bit in GPIOAFSEL.
-			 * Firstly there are some settings which are not commonly configured such as Analog Functionality
-			 * which is used only with ADC pins and internal resistor which is used with internal GPIO pins
-			 * so i disabled them and if i need them in the required configurations
-			 */
+
 
 			/* Set the pin operation as Digital */
 			CLEAR_BIT(Port_Registers[port_num]->Port_AmselReg ,pin_num); /* Disable the Analog Functionality */
@@ -121,7 +113,17 @@ void Port_Init(const Port_ConfigType* ConfigPtr){
 			/* Disable The internal Pull Up and Pull Down by default and enable them only if the pin is GPIO i/p*/
 			CLEAR_BIT(Port_Registers[port_num]->Port_PurReg ,pin_num);  /* Disable the Internal Pull Up */
 			CLEAR_BIT(Port_Registers[port_num]->Port_PdrReg[0] ,pin_num);  /* Disable the Internal Pull DOWN */
-
+			
+			/*
+			 * For Set The Mode of the pin , if it is GPIO pin , then we clear the crossponding
+			 * bit in GPIOAFSEL and clear the crossponding PORT MASK CONTROL 4 bits in GPIOPCTL,
+			 * else we set the PORT MASK CONTROL 4 bits in GPIOPCTL & set the crossponding
+			 * bit in GPIOAFSEL.
+			 * Firstly there are some settings which are not commonly configured such as Analog Functionality
+			 * which is used only with ADC pins and internal resistor which is used with internal GPIO pins
+			 * so i disabled them and if i need them in the required configurations
+			 */
+			
 			/* DIO MODE */
 			if((conf[i].pinMode) == PORT_PIN_MODE_DIO)
 			{
