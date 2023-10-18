@@ -111,6 +111,13 @@ void Port_Init(const Port_ConfigType* ConfigPtr){
 			CLEAR_BIT(Port_Registers[port_num]->Port_AmselReg ,pin_num); /* Disable the Analog Functionality */
 			SET_BIT(Port_Registers[port_num]->Port_DenReg,pin_num);/* Enable the Digital Functionality */
 
+		       /*
+		 	* Set Direction of pin , we firstly clear the crossponding bit
+			* and then put the value in the bit.		
+			*/
+			Port_Registers[port_num]->Port_DirReg[0] &= ~(STD_HIGH<<pin_num);
+			Port_Registers[port_num]->Port_DirReg[0] |= ( (Direction) << pin_num);
+
 			/* Disable The internal Pull Up and Pull Down by default and enable them only if the pin is GPIO i/p*/
 			CLEAR_BIT(Port_Registers[port_num]->Port_PurReg ,pin_num);  /* Disable the Internal Pull Up */
 			CLEAR_BIT(Port_Registers[port_num]->Port_PdrReg[0] ,pin_num);  /* Disable the Internal Pull DOWN */
